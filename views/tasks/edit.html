@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-white text-xl font-bold">TODO</h1>
+            <a href="/" class="bg-blue-500 text-white px-4 py-2 rounded">Back to Tasks</a>
+        </div>
+    </nav>
+    <div class="container mx-auto mt-10">
+        <h1 class="text-2xl font-bold mb-4">Edit Task</h1>
+        <form id="editTaskForm" class="bg-white shadow-md rounded p-4">
+            <input type="hidden" id="taskId" value="">
+            <div class="mb-4">
+                <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+                <input type="text" id="title" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+                <textarea id="description" name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskId = window.location.pathname.split('/')[2];
+            document.getElementById('taskId').value = taskId;
+
+            fetch(`/tasks/${taskId}`)
+                .then(response => response.json())
+                .then(task => {
+                    document.getElementById('title').value = task.title;
+                    document.getElementById('description').value = task.description;
+                });
+
+            document.getElementById('editTaskForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const title = document.getElementById('title').value;
+                const description = document.getElementById('description').value;
+
+                fetch(`/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title, description }),
+                })
+                .then(response => response.json())
+                .then(task => {
+                    window.location.href = '/';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

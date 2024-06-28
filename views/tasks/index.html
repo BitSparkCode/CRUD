@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-white text-xl font-bold">TODO</h1>
+            <button id="createTaskButton" class="bg-blue-500 text-white px-4 py-2 rounded">Create New Task</button>
+        </div>
+    </nav>
+    <div class="container mx-auto mt-10">
+        <ul id="taskList" class="bg-white shadow-md rounded p-4">
+            <!-- Task items will be added here dynamically -->
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskList = document.getElementById('taskList');
+
+            const fetchTasks = () => {
+                fetch('/tasks')
+                    .then(response => response.json())
+                    .then(tasks => {
+                        taskList.innerHTML = '';
+                        tasks.forEach(task => {
+                            const li = document.createElement('li');
+                            li.className = 'flex justify-between items-center border-b py-2';
+                            li.innerHTML = `
+                                <div>
+                                    <span class="text-gray-600">ID: ${task.id}</span>
+                                    <span class="text-blue-500 ml-4">${task.title || 'Untitled Task'}</span>
+                                </div>
+                                <div>
+                                    <a href="/tasks/${task.id}/show" class="bg-green-500 text-white px-4 py-2 rounded">Show</a>
+                                    <a href="/tasks/${task.id}/edit" class="bg-yellow-500 text-white px-4 py-2 rounded ml-2">Edit</a>
+                                    <button class="bg-red-500 text-white px-4 py-2 rounded ml-2" onclick="deleteTask(${task.id})">Delete</button>
+                                </div>
+                            `;
+                            taskList.appendChild(li);
+                        });
+                    });
+            };
+
+            document.getElementById('createTaskButton').addEventListener('click', () => {
+                fetch('/tasks', { method: 'POST' })
+                    .then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    });
+            });
+
+            window.deleteTask = (taskId) => {
+                fetch(`/tasks/${taskId}`, { method: 'DELETE' })
+                    .then(() => {
+                        fetchTasks();
+                    });
+            };
+
+            fetchTasks();
+        });
+    </script>
+</body>
+</html>
