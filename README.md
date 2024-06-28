@@ -1,6 +1,6 @@
 ### README.md
 
-```markdown
+
 # Task Manager
 
 Eine einfache CRUD-Anwendung für ein Aufgaben-Management-System mit Permalinks und einer Benutzeroberfläche, die mit Tailwind CSS gestaltet ist.
@@ -67,4 +67,4 @@ Erstellen Sie eine kleine CRUD-Anwendung für ein Aufgaben-Management-System. Je
 7. **Anwendung im Browser aufrufen:**
 
    Öffnen Sie Ihren Browser und navigieren Sie zu `http://localhost:3000`, um die Anwendung zu verwenden.
-```
+
