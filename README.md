@@ -1,6 +1,4 @@
-Hier ist das `README.md`-Dokument, das die Projektstruktur und eine kurze Anleitung zur Verwendung beschreibt:
-
-### `README.md`
+### README.md
 
 ```markdown
 # Task Manager
