@@ -1,6 +1,3 @@
-### README.md
-
-
 # Task Manager
 
 Eine einfache CRUD-Anwendung für ein Aufgaben-Management-System mit Permalinks und einer Benutzeroberfläche, die mit Tailwind CSS gestaltet ist.
